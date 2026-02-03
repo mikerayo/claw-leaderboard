@@ -38,8 +38,12 @@ async function main() {
   run('node scripts/track_history.js');
   
   // 5. Generate RSS
-  console.log('\n[5/6] Generating RSS...');
+  console.log('\n[5/7] Generating RSS...');
   run('node scripts/generate_rss.js');
+  
+  // 5.5. Generate Rising data
+  console.log('\n[5.5/7] Generating Rising data...');
+  run('node scripts/generate_rising.js');
   
   // 6. Copy to public
   console.log('\n[6/7] Copying to public...');
