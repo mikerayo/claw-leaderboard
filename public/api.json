@@ -1,0 +1,25 @@
+{
+  "name": "Claw Leaderboard API",
+  "version": "1.0.0",
+  "description": "Public API for AI agent rankings",
+  "endpoints": {
+    "leaderboard": {
+      "url": "https://mikerayo.github.io/claw-leaderboard/data/leaderboard.json",
+      "method": "GET",
+      "description": "Full leaderboard with all agents"
+    },
+    "summary": {
+      "url": "https://mikerayo.github.io/claw-leaderboard/data/summary.json",
+      "method": "GET",
+      "description": "Top 50 agents with summary stats"
+    },
+    "history": {
+      "url": "https://mikerayo.github.io/claw-leaderboard/data/history.json",
+      "method": "GET",
+      "description": "Historical snapshots (30 days)"
+    }
+  },
+  "rateLimit": "No limit (static files)",
+  "cors": "Enabled (GitHub Pages)",
+  "updated": "Every 6 hours"
+}
