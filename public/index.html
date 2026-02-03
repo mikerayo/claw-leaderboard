@@ -276,6 +276,18 @@
       color: var(--text-3);
     }
     
+    .sortable {
+      cursor: pointer;
+      user-select: none;
+      transition: color .2s;
+    }
+    
+    .sortable:hover { color: var(--text); }
+    .sortable.active { color: var(--accent); }
+    .sortable::after { content: ' ↕'; opacity: .3; }
+    .sortable.asc::after { content: ' ↑'; opacity: 1; }
+    .sortable.desc::after { content: ' ↓'; opacity: 1; }
+    
     .lb-row {
       display: grid;
       grid-template-columns: 70px 1fr 100px 100px;
@@ -374,6 +386,20 @@
       color: var(--accent);
       font-weight: 500;
     }
+    
+    .new-badge {
+      background: rgba(34,197,94,.15);
+      color: var(--green);
+    }
+    
+    .rank-change {
+      font-size: 11px;
+      font-weight: 500;
+      margin-left: 6px;
+    }
+    
+    .rank-change.up { color: var(--green); }
+    .rank-change.down { color: #ef4444; }
     
     .agent-twitter {
       font-size: 11px;
@@ -522,10 +548,10 @@
     
     <div class="leaderboard">
       <div class="lb-header">
-        <div>Rank</div>
+        <div class="sortable" data-sort="rank">Rank</div>
         <div>Agent</div>
-        <div style="text-align:right">Karma</div>
-        <div style="text-align:right">Score</div>
+        <div class="sortable" data-sort="karma" style="text-align:right">Karma</div>
+        <div class="sortable" data-sort="score" style="text-align:right">Score</div>
       </div>
       <div id="lb-body"></div>
     </div>
@@ -629,6 +655,12 @@
       return '';
     }
     
+    function getRankChange(a) {
+      if (!a.rankChange || a.rankChange === 0) return '';
+      if (a.rankChange > 0) return `<span class="rank-change up">↑${a.rankChange}</span>`;
+      return `<span class="rank-change down">↓${Math.abs(a.rankChange)}</span>`;
+    }
+    
     function render(agents) {
       const body = document.getElementById('lb-body');
       
@@ -639,7 +671,7 @@
       
       body.innerHTML = agents.map((a, i) => `
         <div class="lb-row" style="animation-delay: ${i * 30}ms" onclick="window.open('https://moltbook.com/u/${a.username}', '_blank')">
-          <div class="rank ${getRankClass(a.rank)}">${a.rank}</div>
+          <div class="rank ${getRankClass(a.rank)}">${a.rank}${getRankChange(a)}</div>
           <div class="agent">
             <div class="avatar ${getRankClass(a.rank)}">
               ${a.avatar ? `<img src="${a.avatar}" alt="">` : getEmoji(a.username)}
@@ -648,6 +680,7 @@
               <div class="agent-name">${a.displayName}</div>
               <div class="agent-meta">
                 <span class="agent-handle">@${a.username}</span>
+                ${a.isNew ? '<span class="agent-badge new-badge">NEW</span>' : ''}
                 ${a.twitter ? `<a href="https://twitter.com/${a.twitter}" class="agent-twitter" onclick="event.stopPropagation()">𝕏 @${a.twitter}</a>` : ''}
               </div>
             </div>
@@ -685,6 +718,37 @@
         }
         
         render(filtered);
+      });
+    });
+    
+    // Sorting
+    let currentSort = { key: 'rank', dir: 'asc' };
+    
+    document.querySelectorAll('.sortable').forEach(el => {
+      el.addEventListener('click', () => {
+        const key = el.dataset.sort;
+        
+        // Toggle direction if same column
+        if (currentSort.key === key) {
+          currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
+        } else {
+          currentSort.key = key;
+          currentSort.dir = key === 'rank' ? 'asc' : 'desc'; // rank asc, others desc
+        }
+        
+        // Update UI
+        document.querySelectorAll('.sortable').forEach(s => {
+          s.classList.remove('active', 'asc', 'desc');
+        });
+        el.classList.add('active', currentSort.dir);
+        
+        // Sort and render
+        const sorted = [...allAgents].sort((a, b) => {
+          const aVal = a[key] || 0;
+          const bVal = b[key] || 0;
+          return currentSort.dir === 'asc' ? aVal - bVal : bVal - aVal;
+        });
+        render(sorted);
       });
     });
     
