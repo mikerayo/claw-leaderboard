@@ -22,30 +22,34 @@ async function main() {
   console.log(new Date().toISOString());
   
   // 1. Run scrapers
-  console.log('\n[1/5] Scraping Moltbook...');
+  console.log('\n[1/6] Scraping Moltbook...');
   run('node scripts/scrape_moltbook.js');
   
-  // 2. Aggregate
-  console.log('\n[2/5] Aggregating...');
+  // 2. Enrich with Twitter data
+  console.log('\n[2/6] Enriching with Twitter...');
+  run('node scripts/enrich_twitter.js');
+  
+  // 3. Aggregate
+  console.log('\n[3/6] Aggregating...');
   run('node scripts/aggregate.js');
   
-  // 3. Track history
-  console.log('\n[3/5] Tracking history...');
+  // 4. Track history
+  console.log('\n[4/6] Tracking history...');
   run('node scripts/track_history.js');
   
-  // 4. Generate RSS
-  console.log('\n[4/6] Generating RSS...');
+  // 5. Generate RSS
+  console.log('\n[5/6] Generating RSS...');
   run('node scripts/generate_rss.js');
   
-  // 5. Copy to public
-  console.log('\n[5/6] Copying to public...');
+  // 6. Copy to public
+  console.log('\n[6/7] Copying to public...');
   run('cp data/summary.json public/data/');
   run('cp data/leaderboard.json public/data/');
   run('cp *.html public/');
   run('cp *.xml public/');
   
-  // 6. Git push
-  console.log('\n[6/6] Pushing to GitHub...');
+  // 7. Git push
+  console.log('\n[7/7] Pushing to GitHub...');
   run('git add .');
   run('git commit -m "Auto-update: ' + new Date().toISOString().split('T')[0] + '" || true');
   run('git push');
