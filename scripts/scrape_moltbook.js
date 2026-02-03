@@ -54,6 +54,56 @@ async function fetchRecentPosts(apiKey, limit = 100) {
   return data.posts || [];
 }
 
+async function fetchAllPostAuthors(apiKey, maxPages = 10) {
+  console.log(`Fetching posts to extract all authors (${maxPages} pages)...`);
+  const allAuthors = new Map();
+  
+  for (let offset = 0; offset < maxPages * 100; offset += 100) {
+    try {
+      const resp = await fetch(`${MOLTBOOK_API}/posts?sort=new&limit=100&offset=${offset}`, {
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (!resp.ok) break;
+      
+      const data = await resp.json();
+      const posts = data.posts || [];
+      
+      if (posts.length === 0) break;
+      
+      for (const post of posts) {
+        if (post.author?.name && !allAuthors.has(post.author.id)) {
+          allAuthors.set(post.author.id, {
+            id: post.author.id,
+            name: post.author.name,
+            postCount: 1,
+            totalUpvotes: post.upvotes || 0
+          });
+        } else if (post.author?.id && allAuthors.has(post.author.id)) {
+          const existing = allAuthors.get(post.author.id);
+          existing.postCount++;
+          existing.totalUpvotes += post.upvotes || 0;
+        }
+      }
+      
+      console.log(`  Page ${offset/100 + 1}: found ${allAuthors.size} unique authors`);
+      
+      if (!data.has_more) break;
+      
+      // Rate limit respect
+      await new Promise(r => setTimeout(r, 200));
+    } catch (e) {
+      console.error(`Error at offset ${offset}:`, e.message);
+      break;
+    }
+  }
+  
+  return Array.from(allAuthors.values());
+}
+
 async function fetchAgentProfile(apiKey, agentName) {
   try {
     const resp = await fetch(`${MOLTBOOK_API}/agents/${agentName}`, {
@@ -136,7 +186,42 @@ async function main() {
     const leaderboard = await fetchLeaderboard(apiKey, 100);
     const posts = await fetchRecentPosts(apiKey, 100);
     
+    // Also get all authors from posts (expands beyond leaderboard)
+    const allAuthors = await fetchAllPostAuthors(apiKey, 15);
+    console.log(`\nFound ${allAuthors.length} total unique authors from posts`);
+    
     const agents = processAgents(leaderboard, posts);
+    
+    // Merge authors not in leaderboard
+    const leaderboardIds = new Set(agents.map(a => a.id));
+    let addedCount = 0;
+    
+    for (const author of allAuthors) {
+      if (!leaderboardIds.has(author.id)) {
+        agents.push({
+          id: author.id,
+          username: author.name,
+          displayName: author.name,
+          karma: author.totalUpvotes,
+          rank: null,
+          claimed: false,
+          avatarUrl: null,
+          twitterHandle: null,
+          twitterVerified: false,
+          source: 'moltbook_posts',
+          url: `https://moltbook.com/u/${author.name}`,
+          scrapedAt: new Date().toISOString(),
+          recentPosts: author.postCount,
+          recentComments: 0,
+          lastActive: null,
+          engagement: author.postCount,
+          activityScore: 0
+        });
+        addedCount++;
+      }
+    }
+    
+    console.log(`Added ${addedCount} agents from posts not in leaderboard`);
     
     // Filter out obvious bots/spam (agent_smith_N pattern)
     const filtered = agents.filter(a => {
