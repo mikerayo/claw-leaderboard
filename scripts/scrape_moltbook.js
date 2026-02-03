@@ -54,25 +54,38 @@ async function fetchRecentPosts(apiKey, limit = 100) {
   return data.posts || [];
 }
 
-async function fetchAllPostAuthors(apiKey, maxPages = 10) {
-  console.log(`Fetching posts to extract all authors (${maxPages} pages)...`);
+async function fetchAllPostAuthors(apiKey, maxPages = 20, sort = 'new') {
+  console.log(`Fetching posts (${sort}) to extract authors (up to ${maxPages} pages)...`);
   const allAuthors = new Map();
+  let emptyPages = 0;
   
-  for (let offset = 0; offset < maxPages * 100; offset += 100) {
+  for (let page = 0; page < maxPages; page++) {
+    const offset = page * 100;
     try {
-      const resp = await fetch(`${MOLTBOOK_API}/posts?sort=new&limit=100&offset=${offset}`, {
+      const resp = await fetch(`${MOLTBOOK_API}/posts?sort=${sort}&limit=100&offset=${offset}`, {
         headers: {
           'Authorization': `Bearer ${apiKey}`,
           'Accept': 'application/json'
         }
       });
       
-      if (!resp.ok) break;
+      if (!resp.ok) {
+        console.log(`  Page ${page + 1}: API error ${resp.status}, continuing...`);
+        emptyPages++;
+        if (emptyPages > 3) break;
+        continue;
+      }
       
       const data = await resp.json();
       const posts = data.posts || [];
       
-      if (posts.length === 0) break;
+      if (posts.length === 0) {
+        emptyPages++;
+        if (emptyPages > 3) break;
+        continue;
+      }
+      
+      emptyPages = 0; // Reset on success
       
       for (const post of posts) {
         if (post.author?.name && !allAuthors.has(post.author.id)) {
@@ -89,15 +102,14 @@ async function fetchAllPostAuthors(apiKey, maxPages = 10) {
         }
       }
       
-      console.log(`  Page ${offset/100 + 1}: found ${allAuthors.size} unique authors`);
-      
-      if (!data.has_more) break;
+      console.log(`  Page ${page + 1}: ${posts.length} posts, ${allAuthors.size} unique authors total`);
       
       // Rate limit respect
-      await new Promise(r => setTimeout(r, 200));
+      await new Promise(r => setTimeout(r, 300));
     } catch (e) {
-      console.error(`Error at offset ${offset}:`, e.message);
-      break;
+      console.error(`  Page ${page + 1} error:`, e.message);
+      emptyPages++;
+      if (emptyPages > 3) break;
     }
   }
   
@@ -187,8 +199,25 @@ async function main() {
     const posts = await fetchRecentPosts(apiKey, 100);
     
     // Also get all authors from posts (expands beyond leaderboard)
-    const allAuthors = await fetchAllPostAuthors(apiKey, 15);
-    console.log(`\nFound ${allAuthors.length} total unique authors from posts`);
+    // Scrape multiple sort orders to maximize coverage
+    const authorsNew = await fetchAllPostAuthors(apiKey, 20, 'new');
+    const authorsHot = await fetchAllPostAuthors(apiKey, 10, 'hot');
+    const authorsTop = await fetchAllPostAuthors(apiKey, 10, 'top');
+    
+    // Merge all authors
+    const allAuthorsMap = new Map();
+    for (const author of [...authorsNew, ...authorsHot, ...authorsTop]) {
+      if (!allAuthorsMap.has(author.id)) {
+        allAuthorsMap.set(author.id, author);
+      } else {
+        const existing = allAuthorsMap.get(author.id);
+        existing.postCount += author.postCount;
+        existing.totalUpvotes += author.totalUpvotes;
+      }
+    }
+    const allAuthors = Array.from(allAuthorsMap.values());
+    console.log(`\nFound ${allAuthors.length} total unique authors from posts (new+hot+top)`);
+    
     
     const agents = processAgents(leaderboard, posts);
     
