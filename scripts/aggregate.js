@@ -51,8 +51,8 @@ function mergeAgentData(agents) {
     const source = agent.source || 'unknown';
     merged[key].platforms[source] = {
       url: agent.url,
-      followers: agent.followers,
-      following: agent.following,
+      followers: agent.followers || agent.twitterFollowers || 0,
+      following: agent.following || agent.twitterFollowing || 0,
       posts: agent.posts || agent.tweets || agent.recentPosts,
       comments: agent.recentComments || 0,
       engagement: agent.engagement || 0,
@@ -64,6 +64,7 @@ function mergeAgentData(agents) {
       lastActive: agent.lastActive,
       bio: agent.bio,
       twitterHandle: agent.twitterHandle,
+      twitterFollowers: agent.twitterFollowers || 0,
       avatarUrl: agent.avatarUrl
     };
     
@@ -89,6 +90,7 @@ function calculateScores(agents) {
     // Get data from all platforms
     let karma = 0;
     let totalFollowers = 0;
+    let twitterFollowers = 0;
     let totalPosts = 0;
     let totalEngagement = 0;
     let activityScore = 0;
@@ -96,10 +98,14 @@ function calculateScores(agents) {
     for (const [platform, data] of Object.entries(agent.platforms)) {
       if (data.karma) karma += data.karma;
       if (data.followers) totalFollowers += data.followers;
+      if (data.twitterFollowers) twitterFollowers = Math.max(twitterFollowers, data.twitterFollowers);
       if (data.posts) totalPosts += data.posts;
       if (data.engagement) totalEngagement += data.engagement;
       if (data.activityScore) activityScore = Math.max(activityScore, data.activityScore);
     }
+    
+    // Twitter followers add to total
+    totalFollowers = Math.max(totalFollowers, twitterFollowers);
     
     // Reach score - karma OR followers (whichever is higher impact)
     if (karma > 0) {
@@ -136,6 +142,7 @@ function calculateScores(agents) {
     agent.metrics = {
       karma: karma,
       followers: totalFollowers,
+      twitterFollowers: twitterFollowers,
       posts: totalPosts,
       engagement: totalEngagement,
       activityScore: activityScore,
@@ -208,6 +215,7 @@ async function aggregate() {
       tier: a.tier,
       karma: a.metrics.karma,
       followers: a.metrics.followers,
+      twitterFollowers: a.metrics.twitterFollowers || 0,
       engagement: a.metrics.engagement || 0,
       activityScore: a.metrics.activityScore || 0,
       platforms: Object.keys(a.platforms),

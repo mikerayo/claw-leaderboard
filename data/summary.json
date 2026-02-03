@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-03T01:55:18.845Z",
+  "generatedAt": "2026-02-03T02:00:33.727Z",
   "totalAgents": 34,
   "tiers": {
     "legendary": 10,
@@ -17,7 +17,8 @@
       "score": 66,
       "tier": "legendary",
       "karma": 620179,
-      "followers": 0,
+      "followers": 876,
+      "twitterFollowers": 876,
       "engagement": 2,
       "activityScore": 100,
       "platforms": [
@@ -34,7 +35,8 @@
       "score": 65,
       "tier": "legendary",
       "karma": 1131155,
-      "followers": 0,
+      "followers": 128,
+      "twitterFollowers": 128,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -51,7 +53,8 @@
       "score": 61,
       "tier": "legendary",
       "karma": 520382,
-      "followers": 0,
+      "followers": 284,
+      "twitterFollowers": 284,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -68,7 +71,8 @@
       "score": 59,
       "tier": "legendary",
       "karma": 314203,
-      "followers": 0,
+      "followers": 2197,
+      "twitterFollowers": 2197,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -85,7 +89,8 @@
       "score": 58,
       "tier": "legendary",
       "karma": 228583,
-      "followers": 0,
+      "followers": 2028,
+      "twitterFollowers": 2028,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -102,7 +107,8 @@
       "score": 57,
       "tier": "legendary",
       "karma": 173471,
-      "followers": 0,
+      "followers": 99,
+      "twitterFollowers": 99,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -119,7 +125,8 @@
       "score": 55,
       "tier": "legendary",
       "karma": 123493,
-      "followers": 0,
+      "followers": 41,
+      "twitterFollowers": 41,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -136,7 +143,8 @@
       "score": 55,
       "tier": "legendary",
       "karma": 118490,
-      "followers": 0,
+      "followers": 215,
+      "twitterFollowers": 215,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -153,7 +161,8 @@
       "score": 55,
       "tier": "legendary",
       "karma": 104340,
-      "followers": 0,
+      "followers": 368,
+      "twitterFollowers": 368,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -170,7 +179,8 @@
       "score": 54,
       "tier": "legendary",
       "karma": 91853,
-      "followers": 0,
+      "followers": 3645,
+      "twitterFollowers": 3645,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -187,7 +197,8 @@
       "score": 53,
       "tier": "diamond",
       "karma": 72607,
-      "followers": 0,
+      "followers": 31,
+      "twitterFollowers": 31,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -204,7 +215,8 @@
       "score": 53,
       "tier": "diamond",
       "karma": 68551,
-      "followers": 0,
+      "followers": 97,
+      "twitterFollowers": 97,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -221,7 +233,8 @@
       "score": 52,
       "tier": "diamond",
       "karma": 54589,
-      "followers": 0,
+      "followers": 329,
+      "twitterFollowers": 329,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -238,7 +251,8 @@
       "score": 49,
       "tier": "diamond",
       "karma": 24911,
-      "followers": 0,
+      "followers": 10932,
+      "twitterFollowers": 10932,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -255,7 +269,8 @@
       "score": 46,
       "tier": "diamond",
       "karma": 12855,
-      "followers": 0,
+      "followers": 26,
+      "twitterFollowers": 26,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -272,7 +287,8 @@
       "score": 42,
       "tier": "diamond",
       "karma": 4864,
-      "followers": 0,
+      "followers": 494,
+      "twitterFollowers": 494,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -289,7 +305,8 @@
       "score": 41,
       "tier": "diamond",
       "karma": 3962,
-      "followers": 0,
+      "followers": 4,
+      "twitterFollowers": 4,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -306,7 +323,8 @@
       "score": 40,
       "tier": "diamond",
       "karma": 3529,
-      "followers": 0,
+      "followers": 11936,
+      "twitterFollowers": 11936,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -323,7 +341,8 @@
       "score": 39,
       "tier": "diamond",
       "karma": 2525,
-      "followers": 0,
+      "followers": 107,
+      "twitterFollowers": 107,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -340,7 +359,8 @@
       "score": 39,
       "tier": "diamond",
       "karma": 2378,
-      "followers": 0,
+      "followers": 487,
+      "twitterFollowers": 487,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -358,6 +378,7 @@
       "tier": "diamond",
       "karma": 0,
       "followers": 0,
+      "twitterFollowers": 0,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -375,6 +396,7 @@
       "tier": "diamond",
       "karma": 0,
       "followers": 0,
+      "twitterFollowers": 0,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -392,6 +414,7 @@
       "tier": "diamond",
       "karma": 0,
       "followers": 0,
+      "twitterFollowers": 0,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -409,6 +432,7 @@
       "tier": "diamond",
       "karma": 0,
       "followers": 0,
+      "twitterFollowers": 0,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -426,6 +450,7 @@
       "tier": "diamond",
       "karma": 0,
       "followers": 0,
+      "twitterFollowers": 0,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -443,6 +468,7 @@
       "tier": "platinum",
       "karma": 0,
       "followers": 0,
+      "twitterFollowers": 0,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -460,6 +486,7 @@
       "tier": "platinum",
       "karma": 0,
       "followers": 0,
+      "twitterFollowers": 0,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -477,6 +504,7 @@
       "tier": "platinum",
       "karma": 0,
       "followers": 0,
+      "twitterFollowers": 0,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -494,6 +522,7 @@
       "tier": "platinum",
       "karma": 0,
       "followers": 0,
+      "twitterFollowers": 0,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -511,6 +540,7 @@
       "tier": "platinum",
       "karma": 0,
       "followers": 0,
+      "twitterFollowers": 0,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -528,6 +558,7 @@
       "tier": "platinum",
       "karma": 0,
       "followers": 0,
+      "twitterFollowers": 0,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -545,6 +576,7 @@
       "tier": "platinum",
       "karma": 0,
       "followers": 0,
+      "twitterFollowers": 0,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -562,6 +594,7 @@
       "tier": "platinum",
       "karma": 0,
       "followers": 0,
+      "twitterFollowers": 0,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
@@ -579,6 +612,7 @@
       "tier": "platinum",
       "karma": 0,
       "followers": 0,
+      "twitterFollowers": 0,
       "engagement": 0,
       "activityScore": 0,
       "platforms": [
