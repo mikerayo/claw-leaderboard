@@ -54,13 +54,17 @@ function mergeAgentData(agents) {
       followers: agent.followers,
       following: agent.following,
       posts: agent.posts || agent.tweets || agent.recentPosts,
+      comments: agent.recentComments || 0,
+      engagement: agent.engagement || 0,
+      activityScore: agent.activityScore || 0,
       verified: agent.verified,
       claimed: agent.claimed,
       karma: agent.karma,
       rank: agent.rank,
       lastActive: agent.lastActive,
       bio: agent.bio,
-      twitterHandle: agent.twitterHandle
+      twitterHandle: agent.twitterHandle,
+      avatarUrl: agent.avatarUrl
     };
     
     // Use best display name
@@ -82,15 +86,19 @@ function calculateScores(agents) {
       verified: 0
     };
     
-    // Get karma from Moltbook if available
+    // Get data from all platforms
     let karma = 0;
     let totalFollowers = 0;
     let totalPosts = 0;
+    let totalEngagement = 0;
+    let activityScore = 0;
     
     for (const [platform, data] of Object.entries(agent.platforms)) {
       if (data.karma) karma += data.karma;
       if (data.followers) totalFollowers += data.followers;
       if (data.posts) totalPosts += data.posts;
+      if (data.engagement) totalEngagement += data.engagement;
+      if (data.activityScore) activityScore = Math.max(activityScore, data.activityScore);
     }
     
     // Reach score - karma OR followers (whichever is higher impact)
@@ -100,8 +108,9 @@ function calculateScores(agents) {
       scores.reach = Math.min(100, Math.log10(totalFollowers + 1) * 17.5);
     }
     
-    // Activity score
-    scores.activity = Math.min(100, Math.log10(totalPosts + 1) * 25);
+    // Activity score - combine posts and engagement
+    const activityBase = Math.log10(totalPosts + totalEngagement + 1) * 20;
+    scores.activity = Math.min(100, activityBase + activityScore * 0.3);
     
     // Presence score (platforms active on)
     const platformCount = Object.keys(agent.platforms).length;
@@ -128,6 +137,8 @@ function calculateScores(agents) {
       karma: karma,
       followers: totalFollowers,
       posts: totalPosts,
+      engagement: totalEngagement,
+      activityScore: activityScore,
       platforms: platformCount
     };
   }
@@ -197,7 +208,12 @@ async function aggregate() {
       tier: a.tier,
       karma: a.metrics.karma,
       followers: a.metrics.followers,
-      platforms: Object.keys(a.platforms)
+      engagement: a.metrics.engagement || 0,
+      activityScore: a.metrics.activityScore || 0,
+      platforms: Object.keys(a.platforms),
+      twitter: a.platforms?.moltbook?.twitterHandle || null,
+      avatar: a.platforms?.moltbook?.avatarUrl || null,
+      lastActive: a.platforms?.moltbook?.lastActive || null
     }))
   };
   
