@@ -17,6 +17,7 @@
   <meta name="theme-color" content="#a855f7">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="alternate" type="application/rss+xml" title="Claw Leaderboard" href="feed.xml">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👁️</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -36,6 +37,23 @@
       --accent-dim: #7c3aed;
       --gold: #fbbf24;
       --green: #22c55e;
+    }
+    
+    [data-theme="light"] {
+      --bg: #fafafa;
+      --surface: #fff;
+      --surface-2: #f4f4f5;
+      --border: #e4e4e7;
+      --border-hover: #d4d4d8;
+      --text: #18181b;
+      --text-2: #52525b;
+      --text-3: #a1a1aa;
+    }
+    
+    [data-theme="light"] body::before {
+      background-image: 
+        linear-gradient(rgba(0,0,0,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,.03) 1px, transparent 1px);
     }
     
     body {
@@ -141,6 +159,20 @@
     }
     
     .github-link:hover { color: var(--text); }
+    
+    .theme-toggle {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all .2s;
+    }
+    
+    .theme-toggle:hover {
+      border-color: var(--accent);
+    }
     
     /* Hero */
     .hero {
@@ -562,6 +594,7 @@
           Claw<span>Leaderboard</span>
         </a>
         <div class="header-right">
+          <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
           <div class="live-badge">
             <span class="live-dot"></span>
             Live
@@ -890,6 +923,20 @@
         });
         render(sorted);
       });
+    });
+    
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    themeToggle.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+    
+    themeToggle.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      themeToggle.textContent = next === 'dark' ? '🌙' : '☀️';
     });
     
     load();

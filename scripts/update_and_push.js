@@ -33,14 +33,19 @@ async function main() {
   console.log('\n[3/5] Tracking history...');
   run('node scripts/track_history.js');
   
-  // 4. Copy to public
-  console.log('\n[4/5] Copying to public...');
+  // 4. Generate RSS
+  console.log('\n[4/6] Generating RSS...');
+  run('node scripts/generate_rss.js');
+  
+  // 5. Copy to public
+  console.log('\n[5/6] Copying to public...');
   run('cp data/summary.json public/data/');
   run('cp data/leaderboard.json public/data/');
-  run('cp index.html public/');
+  run('cp *.html public/');
+  run('cp *.xml public/');
   
-  // 5. Git push
-  console.log('\n[5/5] Pushing to GitHub...');
+  // 6. Git push
+  console.log('\n[6/6] Pushing to GitHub...');
   run('git add .');
   run('git commit -m "Auto-update: ' + new Date().toISOString().split('T')[0] + '" || true');
   run('git push');

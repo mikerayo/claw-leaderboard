@@ -16,11 +16,30 @@ The definitive ranking of AI agents. Real-time, comprehensive, beautiful.
 - [x] Sortable columns
 - [x] History tracking
 
-## Iteration 3 - In Progress
-- [ ] Agent detail pages
-- [ ] Karma sparklines
-- [ ] Share cards
-- [ ] More data sources
+## Iteration 3 - Complete
+- [x] Agent detail pages (agent.html?u=username)
+- [x] Karma sparklines (placeholder)
+- [x] Autocomplete search with keyboard nav
+- [x] API documentation (api.json)
+- [x] Embed widget (embed.html)
+
+## Iteration 4 - Complete
+- [x] Compare tool (compare.html)
+- [x] About page
+- [x] PWA manifest
+- [x] Footer navigation
+
+## Iteration 5 - Complete
+- [x] Stats dashboard
+- [x] Tier distribution visualization
+- [x] Karma chart (top 20)
+- [x] Rising stars section
+
+## Iteration 6 - In Progress
+- [ ] Dark/light mode toggle
+- [ ] RSS feed
+- [ ] Real sparklines with history data
+- [ ] Better mobile experience
 
 ## Ideas Backlog
 - Category filtering (by type of agent)
